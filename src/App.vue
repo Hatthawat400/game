@@ -30,15 +30,42 @@
         @M_SPATK="m_satk"
       ></game>
     </div>
+    <modal
+      v-if="he_hp <= 0 && mon_hp > 0 && he_name != ''"
+      @$reset="$reset"
+      @reset="reset"
+      @close="showModal = false"
+    >
+      <h1 slot="body">YOU LOUSE</h1>
+    </modal>
+    <modal
+      v-if="mon_hp <= 0 && he_hp > 0 && he_name != ''"
+      @$reset="$reset"
+      @reset="reset"
+      @close="showModal = false"
+    >
+      <h1 slot="body">YOU WIN</h1>
+    </modal>
+    <modal
+      v-if="(he_hp<=0 && mon_hp <= 0 ) && he_name != ''"
+      v-bind="reset"
+      @$reset="$reset"
+      @reset="reset"
+      @close="showModal = false"
+    >
+      <h1 slot="body">DRAW</h1>
+    </modal>
   </div>
 </template>
 
 <script>
 import game from "./components/game";
+import modal from "./components/over";
 export default {
   name: "App",
   components: {
     game,
+    modal,
   },
   data: function () {
     return {
@@ -93,6 +120,16 @@ export default {
     m_satk(value) {
       this.attack = value;
       this.he_hp -= this.attack;
+    },
+    $reset(value) {
+      this.he_name = value;
+      this.mon_name = value;
+      this.h_img = value;
+      this.m_img = value;
+    },
+    reset(value) {
+      this.he_hp = value;
+      this.mon_hp = value;
     },
   },
 };
